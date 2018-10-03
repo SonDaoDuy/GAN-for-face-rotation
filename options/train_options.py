@@ -33,6 +33,9 @@ class TrainOptions(BaseOptions):
         self._parser.add_argument('--lambda_D_cond', type=float, default=0.5, help='lambda for condition discriminator loss')
         self._parser.add_argument('--lambda_cyc', type=float, default=5, help='lambda cycle loss')
         self._parser.add_argument('--lambda_G_sim', type=float, default=100, help='lambda cycle loss')
+<<<<<<< HEAD
+>>>>>>> c740382... save for remote work
+=======
 >>>>>>> c740382... save for remote work
         self._parser.add_argument('--lambda_mask', type=float, default=0.1, help='lambda mask loss')
         self._parser.add_argument('--lambda_D_gp', type=float, default=10, help='lambda gradient penalty loss')

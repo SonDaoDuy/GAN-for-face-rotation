@@ -36,6 +36,10 @@ class CasiaDataset(DatasetBase):
             #tao real_heat_map o day
             real_heat_map =self._cond_to_heat_map(real_cond)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            real_heat_map = real_heat_map/real_heat_map.max()
+>>>>>>> c740382... save for remote work
 =======
             real_heat_map = real_heat_map/real_heat_map.max()
 >>>>>>> c740382... save for remote work
@@ -56,6 +60,10 @@ class CasiaDataset(DatasetBase):
             #tao desired_heat_map o day
             desired_heat_map = self._cond_to_heat_map(desired_cond)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            desired_heat_map = desired_heat_map/desired_heat_map.max()
+>>>>>>> c740382... save for remote work
 =======
             desired_heat_map = desired_heat_map/desired_heat_map.max()
 >>>>>>> c740382... save for remote work
