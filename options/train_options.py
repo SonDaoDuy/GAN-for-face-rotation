@@ -24,9 +24,16 @@ class TrainOptions(BaseOptions):
         self._parser.add_argument('--lr_D_lmk', type=float, default=0.0001, help='initial learning rate for D_lmk adam')
         self._parser.add_argument('--D_lmk_adam_b1', type=float, default=0.5, help='beta1 for D adam')
         self._parser.add_argument('--D_lmk_adam_b2', type=float, default=0.999, help='beta2 for D adam')
+<<<<<<< HEAD
         self._parser.add_argument('--lambda_D_prob', type=float, default=1, help='lambda for real/fake discriminator loss')
         self._parser.add_argument('--lambda_D_cond', type=float, default=4000, help='lambda for condition discriminator loss')
         self._parser.add_argument('--lambda_cyc', type=float, default=10, help='lambda cycle loss')
+=======
+        self._parser.add_argument('--lambda_D_prob', type=float, default=0.8, help='lambda for real/fake discriminator loss')
+        self._parser.add_argument('--lambda_D_cond', type=float, default=0.5, help='lambda for condition discriminator loss')
+        self._parser.add_argument('--lambda_cyc', type=float, default=5, help='lambda cycle loss')
+        self._parser.add_argument('--lambda_G_sim', type=float, default=100, help='lambda cycle loss')
+>>>>>>> c740382... save for remote work
         self._parser.add_argument('--lambda_mask', type=float, default=0.1, help='lambda mask loss')
         self._parser.add_argument('--lambda_D_gp', type=float, default=10, help='lambda gradient penalty loss')
         self._parser.add_argument('--lambda_mask_smooth', type=float, default=1e-5, help='lambda mask smooth loss')

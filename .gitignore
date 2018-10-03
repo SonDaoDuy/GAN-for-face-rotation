@@ -108,6 +108,7 @@ dataset/
 sample_dataset/
 
 #model
+pretrain/
 snapshot/
 checkpoints/
 

@@ -35,6 +35,10 @@ class CasiaDataset(DatasetBase):
             #print(len(real_cond))
             #tao real_heat_map o day
             real_heat_map =self._cond_to_heat_map(real_cond)
+<<<<<<< HEAD
+=======
+            real_heat_map = real_heat_map/real_heat_map.max()
+>>>>>>> c740382... save for remote work
             #print(np.shape(real_heat_map))
 
             if real_img is None:
@@ -51,6 +55,10 @@ class CasiaDataset(DatasetBase):
             #print(len(desired_cond))
             #tao desired_heat_map o day
             desired_heat_map = self._cond_to_heat_map(desired_cond)
+<<<<<<< HEAD
+=======
+            desired_heat_map = desired_heat_map/desired_heat_map.max()
+>>>>>>> c740382... save for remote work
             #print("error here!!")
 
         # transform data
