@@ -12,6 +12,9 @@ class ModelsFactory:
         if model_name == 'ganormalization':
             from .ganormalization import GANormalization
             model = GANormalization(*args, **kwargs)
+        elif model_name == 'ganormalization_v2':
+            from .ganormalization_v2 import GANormalizationv2
+            model = GANormalizationv2(*args, **kwargs)
         else:
             raise ValueError("Model %s not recognized." % model_name)
 

@@ -9,12 +9,21 @@ def read_cv2_img(path):
     :return: Only returns color images
     '''
     img = cv2.imread(path, -1)
+
     #print(img.shape)
     if img is not None:
         if len(img.shape) != 3:
             return None
+        # #[0,255] -> [-1,1]
+        # img = img *2 - 1
+        # # RGB -> BGR
+        # #img = img[:,:,[2,1,0]]
+        # #show_cv2_img(img)
+        # # B x H x W x C-> B x C x H x W
+        # img = img.transpose(2, 0, 1)
 
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        #img = cv2.resize(img, (96,96))
 
     return img
 
@@ -52,3 +61,18 @@ def show_images_row(imgs, titles, rows=1):
         ax.set_title(title)
         plt.axis('off')
     plt.show()
+
+def convert_image(data):
+    if len(data.shape)==4:
+        img = data.transpose(0, 2, 3, 1)+1
+        img = img / 2.0
+        img = img * 255.
+        img = img[:,:,:,[2,1,0]]
+
+    else:
+        img = data.transpose(1, 2, 0)+1
+        img = img / 2.0
+        img = img * 255.
+        img = img[:,:,[2,1,0]]
+
+    return img.astype(np.uint8)

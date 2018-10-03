@@ -106,11 +106,14 @@ venv.bak/
 #dataset
 dataset/
 sample_dataset/
+sample_dataset_96/
 
 #model
 pretrain/
 snapshot/
 checkpoints/
+*.tar
+*.pth
 
 #results
 results/

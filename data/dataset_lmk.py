@@ -6,11 +6,13 @@ import random
 import numpy as np
 import pickle
 from utils import cv_utils
+import matplotlib.pyplot as plt
 
 class CasiaDataset(DatasetBase):
     def __init__(self, opt, is_for_train):
         super(CasiaDataset, self).__init__(opt, is_for_train)
         self._name = 'CasiaDataset'
+        #self._count_dsi = 0
 
         #read dataset
         self._read_dataset_paths()
@@ -22,6 +24,7 @@ class CasiaDataset(DatasetBase):
         real_img = None
         real_cond = None
         real_heat_map = None
+        
         while real_img is None or real_cond is None or real_heat_map is None:
             # if sample randomly: overwrite index
             if not self._opt.serial_batches:
@@ -33,16 +36,8 @@ class CasiaDataset(DatasetBase):
             real_img, real_img_path = self._get_img_by_id(sample_id) #!!!!
             real_cond = self._get_cond_by_id(sample_id) # !!!!!
             #print(len(real_cond))
-            #tao real_heat_map o day
             real_heat_map =self._cond_to_heat_map(real_cond)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             real_heat_map = real_heat_map/real_heat_map.max()
->>>>>>> c740382... save for remote work
-=======
-            real_heat_map = real_heat_map/real_heat_map.max()
->>>>>>> c740382... save for remote work
             #print(np.shape(real_heat_map))
 
             if real_img is None:
@@ -59,18 +54,13 @@ class CasiaDataset(DatasetBase):
             #print(len(desired_cond))
             #tao desired_heat_map o day
             desired_heat_map = self._cond_to_heat_map(desired_cond)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             desired_heat_map = desired_heat_map/desired_heat_map.max()
->>>>>>> c740382... save for remote work
-=======
-            desired_heat_map = desired_heat_map/desired_heat_map.max()
->>>>>>> c740382... save for remote work
             #print("error here!!")
 
         # transform data
         img = self._transform(Image.fromarray(real_img))
+        # desired_heat_map = transforms.ToTensor(desired_heat_map)
+        # real_heat_map = transforms.ToTensor(real_heat_map)
 
         # pack data
         sample = {'real_img': img,
@@ -156,18 +146,37 @@ class CasiaDataset(DatasetBase):
              return None
 
         for i in range(5):
-            x_item = np.random.normal(cond_lmk[i*2], 2, 50000)
-            y_item = np.random.normal(cond_lmk[i*2+1], 2, 50000)
+            x_item = np.random.normal(cond_lmk[i*2], 2, 5000)
+            y_item = np.random.normal(cond_lmk[i*2+1], 2, 5000)
             x.extend(x_item)
             y.extend(y_item)
 
-        # if len(x) != 5 or len(y) != 5:
-        #     print('error in making x, y heat map!!!, len x: %d, len y: %d' % (len(x), len(y)))
-        #     return None
-
-        #x = np.array(x)
-        #y = np.array(y)
-        #x = np.concatenate((x1,x2,x3,x4))
-        #y = np.concatenate((y1,y2,y3,y4))
-        H, xedges, yedges = np.histogram2d(x, y, bins=(128, 128))
+        H, xedges, yedges = np.histogram2d(x, y, bins=96, range = ((0,96), (0,96)))
+        #H, xedges, yedges = np.histogram2d(x, y, bins=(96, 96))
+        H = H.T
+        #heatmap = H[::-1]
+        # print("done here")
         return H
+
+    # def _test_heat_map(self, cond_lmk, image):
+    #     x = []
+    #     y = []
+    #     if cond_lmk is None:
+    #          print('error in making x, y heat map!!!, len x: %d, len y: %d' % (len(x), len(y)))
+    #          return None
+
+    #     for i in range(5):
+    #         x_item = np.random.normal(cond_lmk[i*2], 2, 25000)
+    #         y_item = np.random.normal(-cond_lmk[i*2+1], 2, 25000)
+    #         x.extend(x_item)
+    #         y.extend(y_item)
+
+    #     H, xedges, yedges = np.histogram2d(x, y, bins=128, range = ((0,128), (-128,0)))
+    #     #H, xedges, yedges = np.histogram2d(x, y, bins=(96, 96))
+    #     H = H.T
+    #     plt.figure(1)
+    #     plt.subplot(221)
+    #     plt.pcolormesh(x, y, H)
+    #     plt.subplot(222)
+    #     plt.imshow(image)
+    #     plt.show()

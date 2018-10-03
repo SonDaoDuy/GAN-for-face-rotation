@@ -3,11 +3,11 @@ import numpy as np
 from .base_network import NetworkBase, Crop
 import torch
 
-class BeganDiscriminator(NetworkBase):
+class BeganDiscriminatorv3(NetworkBase):
 	"""docstring for ClassName"""
 	def __init__(self, in_channel_num=3, out_channel_num=3):
-		super(BeganDiscriminator, self).__init__()
-		self._name = 'began_discriminator'
+		super(BeganDiscriminatorv3, self).__init__()
+		self._name = 'began_discriminator_v3'
 
 		layers = []
 		layers.append(nn.Conv2d(in_channel_num, 32, 3, 1, 1, bias=False)) # bnx3x128x128 -> bnx32x128x128
@@ -19,7 +19,7 @@ class BeganDiscriminator(NetworkBase):
 		layers.append(nn.ELU())
 
 		layers.append(nn.ZeroPad2d((0, 1, 0, 1)))                        # bnx64x128x128 -> bnx64x129x129
-		layers.append(nn.Conv2d(64, 64, 3, 2, 0, bias=False))            # bnx64x129x129 -> bnx64x64x64
+		layers.append(nn.Conv2d(64, 64, 3, 2, 0, bias=False))            # bnx64x129x129 -> bnx64x48x48
 		layers.append(nn.BatchNorm2d(64))
 		layers.append(nn.ELU())
 
@@ -32,7 +32,7 @@ class BeganDiscriminator(NetworkBase):
 		layers.append(nn.ELU())
 
 		layers.append(nn.ZeroPad2d((0, 1, 0, 1)))                        # bnx128x64x64 -> bnx128x65x65
-		layers.append(nn.Conv2d(128, 128, 3, 2, 0, bias=False))          # bnx128x64x64 -> bnx128x32x32
+		layers.append(nn.Conv2d(128, 128, 3, 2, 0, bias=False))          # bnx128x64x64 -> bnx128x24x24
 		layers.append(nn.BatchNorm2d(128))
 		layers.append(nn.ELU())
 
@@ -46,8 +46,8 @@ class BeganDiscriminator(NetworkBase):
 
 		self.encoder = nn.Sequential(*layers)
 
-		self.fc1 = nn.Linear(128*32*32, 512)
-		self.fc2 = nn.Linear(512, 128*32*32)
+		self.fc1 = nn.Linear(128*24*24, 512)
+		self.fc2 = nn.Linear(512, 128*24*24)
 
 		layers_2 = []
 		layers_2.append(nn.Conv2d(128, 128, 3, 1, 1, bias=False))          # bnx128x32x32 -> bnx128x32x32
@@ -91,13 +91,13 @@ class BeganDiscriminator(NetworkBase):
 	def forward(self, input_img, input_heatmap):
 		# print(input_img.size())
 		# print(input_heatmap.size())
-		#input_heatmap = input_heatmap.view(-1,1,128,128)
-		#input = torch.cat([input_img, input_heatmap], dim=1)
+		# input_heatmap = input_heatmap.view(-1,1,128,128)
+		# input = torch.cat([input_img, input_heatmap], dim=1)
 		input = input_img
 
 		x = self.encoder(input)
 
-		x = x.view(-1, 128*32*32)
+		x = x.view(-1, 128*24*24)
 
 		x = self.fc1(x)
 
@@ -105,10 +105,11 @@ class BeganDiscriminator(NetworkBase):
 
 		x = self.fc2(x)
 
-		x = x.view(-1, 128, 32, 32)
+		x = x.view(-1, 128, 24, 24)
 
 		x = self.decoder(x)
 
 		#print(x.size())
 
 		return x
+

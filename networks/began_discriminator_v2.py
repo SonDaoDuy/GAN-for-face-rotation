@@ -3,11 +3,11 @@ import numpy as np
 from .base_network import NetworkBase, Crop
 import torch
 
-class BeganDiscriminator(NetworkBase):
+class BeganDiscriminatorv2(NetworkBase):
 	"""docstring for ClassName"""
 	def __init__(self, in_channel_num=3, out_channel_num=3):
-		super(BeganDiscriminator, self).__init__()
-		self._name = 'began_discriminator'
+		super(BeganDiscriminatorv2, self).__init__()
+		self._name = 'began_discriminator_v2'
 
 		layers = []
 		layers.append(nn.Conv2d(in_channel_num, 32, 3, 1, 1, bias=False)) # bnx3x128x128 -> bnx32x128x128
@@ -91,8 +91,8 @@ class BeganDiscriminator(NetworkBase):
 	def forward(self, input_img, input_heatmap):
 		# print(input_img.size())
 		# print(input_heatmap.size())
-		#input_heatmap = input_heatmap.view(-1,1,128,128)
-		#input = torch.cat([input_img, input_heatmap], dim=1)
+		# input_heatmap = input_heatmap.view(-1,1,128,128)
+		# input = torch.cat([input_img, input_heatmap], dim=1)
 		input = input_img
 
 		x = self.encoder(input)

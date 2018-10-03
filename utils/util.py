@@ -27,6 +27,26 @@ def tensor2im(img, imtype=np.uint8, unnormalize=True, idx=0, nrows=None):
     return image_numpy_t.astype(imtype)
     #return image_numpy_t
 
+def tensor2im_v2(img, imtype=np.uint8, idx=0, nrows=None):
+    # select a sample or create grid if img is a batch
+    if len(img.shape) == 4:
+        nrows = nrows if nrows is not None else int(math.sqrt(img.size(0)))
+        img = img[idx] if idx >= 0 else torchvision.utils.make_grid(img, nrows)
+
+    img = img.cpu().float()
+    image_numpy = img.numpy()
+
+    image_numpy = image_numpy.transpose(1, 2, 0)+1
+    image_numpy = image_numpy / 2.0
+    #image_numpy = image_numpy * 255.
+    #image_numpy_t = image_numpy[:,:,[2,1,0]]
+
+    
+    # image_numpy_t = np.transpose(image_numpy, (1, 2, 0))
+    # image_numpy_t = image_numpy_t*254.0
+
+    return image_numpy.astype(imtype)
+
 def tensor2maskim(mask, imtype=np.uint8, idx=0, nrows=1):
     im = tensor2im(mask, imtype=imtype, idx=idx, unnormalize=False, nrows=nrows)
     if im.shape[2] == 1:

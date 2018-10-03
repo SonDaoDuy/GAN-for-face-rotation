@@ -9,7 +9,7 @@ def main():
 	src_img_path = os.path.join(root_folder + '**\\*.jpg')
 	print(src_img_path)
 	src_img_folders = glob.glob(src_img_path, recursive=True)
-	dst_img_folder = 'D:\\Face Normalize\\GAN_face\\sample_dataset\\imgs\\'
+	dst_img_folder = 'D:\\Face Normalize\\GAN_face\\sample_dataset_96\\imgs\\'
 	count = 0
 	print(len(src_img_folders))
 	for img_path in src_img_folders:
@@ -22,14 +22,14 @@ def main():
 			bb = detect_biggest_face(img_data)
 			if bb != None:
 				img_to_save = crop_face_with_bb(img_data, bb)
-				img_to_save = resize_face(img_to_save)
+				img_to_save = resize_face(img_to_save, size=(96,96))
 				name_to_save = img_folder + '_' + img_name
 				save_path = os.path.join(dst_img_folder, name_to_save)
 				save_image(img_to_save, save_path)
 				count += 1
 				print(count)
-				# if count == 200000:
-				# 	break
+				if count == 20000:
+					break
 
 if __name__ == '__main__':
 	main()
